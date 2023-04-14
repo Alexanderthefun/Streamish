@@ -1,44 +1,33 @@
 import React, { useEffect, useState } from "react";
 import Video from './Video';
 import { getAllVideosWithComments, searchVideos } from "../modules/videoManager";
+import VideoForm from "./VideoForm";
 
-const baseUrl = '/api/video';
+
 
 const VideoList = () => {
     const [videos, setVideos] = useState([]);
     const [searchTerms, setSearchTerms] = useState('');
     const [sort, setSort] = useState(false);
-    const [send, triggerSend] = useState(false)
 
     const getAllVidsWithComments = () => {
         getAllVideosWithComments().then(videos => setVideos(videos));
     };
 
-    const searchVids = () => {
-        searchVideos(searchTerms, sort).then(videos => setVideos(videos));
-    }
 
     useEffect(() => {
         getAllVidsWithComments();
     }, []);
 
-    // useEffect(() => {
-    //     searchVids();
-    // }, [send]);
-    
     useEffect(() => {
-        triggerSend(false);
         setSearchTerms('')
         setSort(false)
     }, [videos]);
     
-    
-
-    
-
 
     return (
         <div className="container">
+            <VideoForm getAllVidsWithComments={getAllVidsWithComments} />
             <input
                 type="text"
                 className="userInput"
