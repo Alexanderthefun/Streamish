@@ -22,14 +22,19 @@ const VideoList = () => {
         getAllVidsWithComments();
     }, []);
 
-    useEffect(() => {
-        searchVids();
-    }, [send]);
+    // useEffect(() => {
+    //     searchVids();
+    // }, [send]);
     
     useEffect(() => {
         triggerSend(false);
+        setSearchTerms('')
+        setSort(false)
     }, [videos]);
+    
+    
 
+    
 
 
     return (
@@ -38,6 +43,7 @@ const VideoList = () => {
                 type="text"
                 className="userInput"
                 placeholder="Search Videos"
+                value={searchTerms}
                 onChange={
                     (event) => {
                         setSearchTerms(event.target.value)
@@ -45,17 +51,18 @@ const VideoList = () => {
                 } />
             <button
                 className="submit"
-                onClick={() => triggerSend(true)}
+                onClick={() => searchVideos(searchTerms, sort).then(videos => setVideos(videos))}
             >
                 Search
             </button>
             <label>Sort by Descending?</label>
             <input
-                type="radio"
+                type="checkbox"
                 className="sortButton"
+                checked={sort}
                 onChange={
-                    () => {
-                        setSort(true)
+                    (event) => {
+                        setSort(event.target.checked)
                     }
                 }/>
             <div className="row justify-content-center">

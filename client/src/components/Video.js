@@ -19,7 +19,7 @@ const Video = ({ video }) => {
                 <p>{video.description}</p>
                 <ul>
                     {video.comments ? (
-                        video.comments.map((c) => <li key={c.Id}>{c.message}</li>)
+                        video.comments.map((c, index) => <li key={index}>{c.message}</li>)
                     ) : null}
                 </ul>
             </CardBody>
