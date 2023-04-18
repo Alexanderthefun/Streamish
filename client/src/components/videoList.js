@@ -23,11 +23,12 @@ const VideoList = () => {
         setSearchTerms('')
         setSort(false)
     }, [videos]);
-    
+
+
 
     return (
         <div className="container">
-            <VideoForm getAllVidsWithComments={getAllVidsWithComments} />
+            {/* <VideoForm getAllVidsWithComments={getAllVidsWithComments} /> */}
             <input
                 type="text"
                 className="userInput"

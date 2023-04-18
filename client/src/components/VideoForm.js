@@ -1,6 +1,6 @@
 import React, { useEffect, useState, } from "react";
 import { addVideo } from "../modules/videoManager";
-import  { useNavigate } from "react-router-dom";
+import  { Navigate, useNavigate } from "react-router-dom";
 
 const VideoForm = ({getAllVidsWithComments}) => {
     const [video, setVideo] = useState({
@@ -10,10 +10,10 @@ const VideoForm = ({getAllVidsWithComments}) => {
     })
 
     
-
+    const navigate = useNavigate();
     const handleSubmit = (event) => {
         event.preventDefault(); 
-        addVideo(video)
+        addVideo(video).then(navigate("/"))
     }
 
 

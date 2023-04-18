@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 const baseUrl = '/api/video';
+const userUrl = '/api/userprofile';
 
 export const getAllVideos = () => {
   return fetch(baseUrl)
@@ -15,6 +16,10 @@ export const searchVideos = (content, bool) => {
     .then((res) => res.json())
 }
 
+export const getVideo = (id) => {
+  return fetch(`${baseUrl}/${id}`).then((res) => res.json());
+};
+
 export const addVideo = (video) => {
   return fetch(baseUrl, {
     method: "POST",
@@ -24,3 +29,7 @@ export const addVideo = (video) => {
     body: JSON.stringify(video),
   })
 };
+
+export  const getVidsByUserId = (id) => {
+  return fetch(`${baseUrl}/users/${id}`).then((res) => res.json());
+}

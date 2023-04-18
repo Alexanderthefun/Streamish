@@ -443,5 +443,52 @@ namespace Streamish.Repositories
 				}
 			}
 		}
+		private Video UserVideos(SqlDataReader reader)
+		{
+			return new Video()
+			{
+				Id = DbUtils.GetInt(reader, "VideoId"),
+				Title = DbUtils.GetString(reader, "Title"),
+				Description = DbUtils.GetString(reader, "Description"),
+				Url = DbUtils.GetString(reader, "Url"),
+				DateCreated = DbUtils.GetDateTime(reader, "VideoDateCreated"),
+				UserProfileId = DbUtils.GetInt(reader, "VideoUserProfileId"),
+				UserProfile = new UserProfile()
+				{
+					Id = DbUtils.GetInt(reader, "VideoUserProfileId"),
+					Name = DbUtils.GetString(reader, "Name")
+				}
+			};
+		}
+
+		public List<Video> GetByUserId(int id)
+		{
+			using (var conn = Connection)
+			{
+				conn.Open();
+				using (var cmd = conn.CreateCommand())
+				{
+					cmd.CommandText = @"SELECT v.Id AS VideoId, v.Title, v.Description, v.Url, v.DateCreated AS VideoDateCreated, v.UserProfileId As VideoUserProfileId,
+                                        up.Name
+                                        FROM Video v
+                                        JOIN UserProfile up ON v.UserProfileId = up.Id
+                                        WHERE up.Id = @Id";
+
+					DbUtils.AddParameter(cmd, "@Id", id);
+
+					using (SqlDataReader reader = cmd.ExecuteReader())
+					{
+						List<Video> videos = new List<Video>();
+						while (reader.Read())
+						{
+
+							videos.Add(UserVideos(reader));
+
+						}
+						return videos;
+					}
+				}
+			}
+		}
 	}
 }
