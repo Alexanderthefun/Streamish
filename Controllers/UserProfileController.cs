@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Streamish.Models;
 using Streamish.Repositories;
+using System.Security.Claims;
 
 namespace Streamish.Controllers
 {
@@ -85,7 +86,7 @@ namespace Streamish.Controllers
 		}
 
 		[Authorize]
-		[HttpGet("firebase/{firebaseUserId}")]
+		[HttpGet("DoesUserExist/{firebaseUserId}")]
 		public IActionResult GetByFirebaseUserId(string firebaseUserId)
 		{
 			var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
@@ -94,6 +95,24 @@ namespace Streamish.Controllers
 				return NotFound();
 			}
 			return Ok(user);
+		}
+
+		private UserProfile GetCurrentUserProfile()
+		{
+			var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+			return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+		}
+
+		[HttpGet("Me")]
+		public IActionResult Me()
+		{
+			var userProfile = GetCurrentUserProfile();
+			if (userProfile == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(userProfile);
 		}
 	}
 }
