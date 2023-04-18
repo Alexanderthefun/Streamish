@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Streamish.Repositories;
 using Streamish.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Streamish.Controllers
 {
@@ -15,12 +16,14 @@ namespace Streamish.Controllers
 			_videoRepository = videoRepository;
 		}
 
+		[Authorize]
 		[HttpGet]
 		public IActionResult Get()
 		{
 			return Ok(_videoRepository.GetAll());
 		}
 
+		[Authorize]
 		[HttpGet("GetWithComments")]
 		public IActionResult GetWithComments()
 		{
@@ -28,6 +31,7 @@ namespace Streamish.Controllers
 			return Ok(videos);
 		}
 
+		[Authorize]
 		[HttpGet("{id}")]
 		public IActionResult Get(int id)
 		{
@@ -39,6 +43,7 @@ namespace Streamish.Controllers
 			return Ok(video);
 		}
 
+		[Authorize]
 		[HttpGet("WithComments/{id}")]
 		public IActionResult GetVideoWithComments(int id)
 		{
@@ -50,6 +55,7 @@ namespace Streamish.Controllers
 			return Ok(video);
 		}
 
+		[Authorize]
 		[HttpPost]
 		public IActionResult Post(Video video)
 		{
@@ -99,6 +105,7 @@ namespace Streamish.Controllers
 			return CreatedAtAction("Get", new { id = video.Id }, video);
 		}
 
+		[Authorize]
 		[HttpPut("{id}")]
 		public IActionResult Put(int id, Video video)
 		{
@@ -111,6 +118,7 @@ namespace Streamish.Controllers
 			return NoContent();
 		}
 
+		[Authorize]
 		[HttpDelete("{id}")]
 		public IActionResult Delete(int id)
 		{
@@ -118,18 +126,21 @@ namespace Streamish.Controllers
 			return NoContent();
 		}
 
+		[Authorize]
 		[HttpGet("search")]
 		public IActionResult Search(string q, bool sortDesc)
 		{
 			return Ok(_videoRepository.Search(q, sortDesc));
 		}
 
+		[Authorize]
 		[HttpGet("hottest")]
 		public IActionResult Hottest(DateTime dt, bool sortDesc)
 		{
 			return Ok(_videoRepository.Hottest(dt, sortDesc));
 		}
 
+		[Authorize]
 		[HttpGet("users/{id}")]
 		public IActionResult GetVidsByUserId(int id)
 		{

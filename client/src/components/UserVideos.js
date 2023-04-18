@@ -17,7 +17,7 @@ const UserVideos = () => {
       <div className="row justify-content-center">
         <div className="col-sm-12 col-lg-6">
             {userVideos.map((v) => {
-               return <Video video={v} />
+               return <Video video={v} key={v.id} />
             })}
         </div>
       </div>

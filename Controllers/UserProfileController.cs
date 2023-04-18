@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Streamish.Models;
 using Streamish.Repositories;
@@ -15,12 +16,14 @@ namespace Streamish.Controllers
 			_userProfileRepository = userProfileRepository;
 		}
 
+		[Authorize]
 		[HttpGet]
 		public IActionResult Get()
 		{
 			return Ok(_userProfileRepository.GetAll());
 		}
 
+		[Authorize]
 		[HttpGet("{id}")]
 		public IActionResult Get(int id)
 		{
@@ -32,6 +35,7 @@ namespace Streamish.Controllers
 			return Ok(user);
 		}
 
+		[Authorize]
 		[HttpPost]
 		public IActionResult Post(UserProfile user)
 		{
@@ -39,6 +43,7 @@ namespace Streamish.Controllers
 			return CreatedAtAction("Get", new { id = user.Id }, user);
 		}
 
+		[Authorize]
 		[HttpPut("{id}")]
 		public IActionResult Put(int id, UserProfile user)
 		{
@@ -51,6 +56,7 @@ namespace Streamish.Controllers
 			return NoContent();
 		}
 
+		[Authorize]
 		[HttpDelete("{id}")]
 		public IActionResult Delete(int id)
 		{
@@ -58,6 +64,7 @@ namespace Streamish.Controllers
 			return NoContent();
 		}
 
+		[Authorize]
 		[HttpGet("{id}/GetUserWithVideosAndComments")]
 		public IActionResult GetUserByIdWithVideosAndComments(int id)
 		{
@@ -69,11 +76,24 @@ namespace Streamish.Controllers
 			return Ok(user);
 		}
 
+		[Authorize]
 		[HttpGet("GetWithVideos")]
 		public IActionResult GetWithVideos()
 		{
 			var users = _userProfileRepository.GetAllUsersWithVideos();
 			return Ok(users);
+		}
+
+		[Authorize]
+		[HttpGet("firebase/{firebaseUserId}")]
+		public IActionResult GetByFirebaseUserId(string firebaseUserId)
+		{
+			var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+			if (user == null)
+			{
+				return NotFound();
+			}
+			return Ok(user);
 		}
 	}
 }
