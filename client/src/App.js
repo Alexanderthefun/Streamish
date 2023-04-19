@@ -6,13 +6,10 @@ import Header from "./components/Header";
 import { onLoginStatusChange, me } from "./modules/authManager";
 import { Spinner } from "reactstrap";
 
-
-// console.log("REMINDER TO MYSELF: New videos show up as posted by (user2) no matter if user1 posts it.")
-
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null)
   const [userProfile, setUserProfile] = useState(null);
-console.log("REMINDER TO MYSELF: New videos show up as posted by (user2) no matter if user1 posts it.")
+
   useEffect(() => {
     onLoginStatusChange(setIsLoggedIn);
   }, []);
